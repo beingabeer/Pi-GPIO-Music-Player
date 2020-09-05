@@ -2,14 +2,14 @@ import sys
 import os
 import pygame
 from random import choice
-from gpiozero import Button, LED, PWMLED
-from signal import pause
+from gpiozero import Button, PWMLED
 from time import sleep
 
 
 led = PWMLED(25)
 button = Button(23)
 
+# Enter path to music files directory
 os.chdir('/home/pi/Music/soundtracks/')
 
 file = os.listdir()
@@ -20,7 +20,6 @@ sleep(2)
 
 
 def play():
-#    button.wait_for_press()
     led.on()
     song = choice(file)
     print('playing song...')
@@ -50,22 +49,18 @@ def change_song():
 
 
 while True:
+  
     sleep(0.1)
+
     if button.is_held:
         stop()
 
-    elif led.is_lit:
-        if button.is_pressed:
+    elif led.is_lit and button.is_pressed:
             change_song()
 
-    elif not led.is_lit:
-        if button.is_pressed:
+    elif not led.is_lit and button.is_pressed:
             sleep(2)
             play()
         
-
-
-
-#pause()
 
 
